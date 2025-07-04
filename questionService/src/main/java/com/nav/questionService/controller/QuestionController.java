@@ -2,6 +2,7 @@ package com.nav.questionService.controller;
 
 import com.nav.questionService.entity.Question;
 import com.nav.questionService.entity.QuestionWrapper;
+import com.nav.questionService.entity.Response;
 import com.nav.questionService.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -60,5 +61,10 @@ public class QuestionController {
     @PostMapping("getQuestions")
     public ResponseEntity<List<QuestionWrapper>> getQuestionsFromId(@RequestBody List<Integer> questionIds) {
         return questionService.getQuestionsFromId(questionIds);
+    }
+
+    @PostMapping("getScore")
+    public ResponseEntity<Integer> getScore(@RequestBody List<Response> responses) {
+        return questionService.getScore(responses);
     }
 }

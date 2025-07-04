@@ -81,7 +81,6 @@ public class QuestionService {
         return new ResponseEntity<>(wrappers, HttpStatus.OK);
     }
 
-    @PostMapping("getScore")
     public ResponseEntity<Integer> getScore(@RequestBody List<Response> responses) {
 
         int right = 0;
