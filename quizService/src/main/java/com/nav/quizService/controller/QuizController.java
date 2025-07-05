@@ -6,7 +6,6 @@ import com.nav.quizService.entity.QuizDTO;
 import com.nav.quizService.entity.Response;
 import com.nav.quizService.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +30,7 @@ public class QuizController {
 
     @PostMapping("/submit/{id}")
     public ResponseEntity<Integer> calculateResult(@PathVariable Integer id, @RequestBody List<Response> responses) {
-        Integer result = quizService.calculateResult(id, responses);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return quizService.calculateResult(id, responses);
+
     }
 }
