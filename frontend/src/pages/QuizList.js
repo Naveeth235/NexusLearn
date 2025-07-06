@@ -2,19 +2,21 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import QuizBox from '../components/QuizBox';
 import './QuizList.css';
+import { useNavigate } from 'react-router-dom';
+
 
 const QuizList = () => {
   const [quizzes, setQuizzes] = useState([]);
+  const navigate = useNavigate();
 
-  useEffect(() => {
+    useEffect(() => {
     axios.get('http://localhost:8090/quiz/all')
       .then(response => setQuizzes(response.data))
       .catch(error => console.error("Error fetching quizzes:", error));
   }, []);
 
   const handleAttemptQuiz = (quizId) => {
-    console.log("Attempt quiz:", quizId);
-    // Navigation logic here
+      navigate(`/quiz/${quizId}`);    // Navigation logic here
   };
 
   return (
