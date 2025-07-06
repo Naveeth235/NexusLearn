@@ -44,4 +44,10 @@ public class QuizService {
         ResponseEntity<Integer> score = quizInterface.getScore(responses);
         return score;
     }
+
+    public ResponseEntity<List<Quiz>> getAllQuizzes() {
+        List<Quiz> quizzes = quizRepository.findAll();
+        return ResponseEntity.ok(quizzes);
+    }
+
 }
