@@ -1,6 +1,5 @@
 import React from 'react';
-import './QuizBox.css';
-
+import '../styles/QuizBox.css'; 
 const QuizBox = ({ quiz, onAttempt }) => {
   return (
     <div className="quiz-box">

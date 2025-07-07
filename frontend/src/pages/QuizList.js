@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import QuizBox from '../components/QuizBox';
-import './QuizList.css';
+import '../styles/QuizList.css';
 import { useNavigate } from 'react-router-dom';
-
 
 const QuizList = () => {
   const [quizzes, setQuizzes] = useState([]);
