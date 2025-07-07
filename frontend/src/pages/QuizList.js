@@ -19,7 +19,7 @@ const QuizList = () => {
   };
 
   return (
-    <div className="quiz-page">
+    <div className="quiz-list-page">
       <h1 className="quiz-heading">Available Quizzes</h1>
       <div className="quiz-grid">
         {quizzes.map(quiz => (
