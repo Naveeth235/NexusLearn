@@ -1,0 +1,29 @@
+.question-box {
+  background-color: #ebebeb;
+  border: 1px solid #dddddd;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  width: 90%;       
+}
+.question-box:hover {
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.question-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.option-label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.option-label input[type="radio"] {
+  margin-right: 10px;
+}
