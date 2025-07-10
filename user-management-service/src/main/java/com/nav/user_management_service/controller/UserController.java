@@ -2,6 +2,7 @@ package com.nav.user_management_service.controller;
 
 import com.nav.user_management_service.dto.LoginRequestDTO;
 import com.nav.user_management_service.dto.LoginResponseDTO;
+import com.nav.user_management_service.dto.UpdateUserRequestDTO;
 import com.nav.user_management_service.dto.UserRequestDTO;
 import com.nav.user_management_service.service.UserService;
 import com.nav.user_management_service.service.AuthService;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -34,9 +35,10 @@ public class UserController {
         return ResponseEntity.ok(authService.login(request));
     }
 
-    @GetMapping("/me")
-    public ResponseEntity<String> getCurrentUser(Principal principal) {
-        return ResponseEntity.ok("Hello, " + principal.getName());
+    @PutMapping("/me")
+    public ResponseEntity<String> updateProfile(@RequestBody UpdateUserRequestDTO request, Principal principal) {
+        String response = userService.updateProfile(principal.getName(), request);
+        return ResponseEntity.ok(response);
     }
 
 }

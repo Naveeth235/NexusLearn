@@ -1,14 +1,17 @@
 package com.nav.user_management_service.service;
 
+import com.nav.user_management_service.dto.UpdateUserRequestDTO;
 import com.nav.user_management_service.dto.UserRequestDTO;
 import com.nav.user_management_service.entity.Role;
 import com.nav.user_management_service.entity.User;
 import com.nav.user_management_service.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 
 @Service
@@ -34,5 +37,24 @@ public class UserService {
         userRepository.save(user);
         return "User registered successfully!";
     }
+
+    public String updateProfile(String email, UpdateUserRequestDTO updatedData) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        if (updatedData.getUsername() != null) {
+            user.setUsername(updatedData.getUsername());
+        }
+
+        if (updatedData.getPhone() != null) {
+            user.setPhone(updatedData.getPhone());
+        }
+
+        user.setUpdatedAt(LocalDateTime.now());
+        userRepository.save(user);
+
+        return "Profile updated successfully.";
+    }
+
 }
 
