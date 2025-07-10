@@ -2,6 +2,7 @@ package com.nav.user_management_service.service;
 
 import com.nav.user_management_service.dto.UpdateUserRequestDTO;
 import com.nav.user_management_service.dto.UserRequestDTO;
+import com.nav.user_management_service.dto.UserResponseDTO;
 import com.nav.user_management_service.entity.Role;
 import com.nav.user_management_service.entity.User;
 import com.nav.user_management_service.repository.UserRepository;
@@ -67,6 +68,20 @@ public class UserService {
         userRepository.save(user);
         return "User account has been deactivated.";
     }
+
+    public UserResponseDTO getProfile(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        UserResponseDTO response = new UserResponseDTO();
+        response.setUsername(user.getUsername());
+        response.setEmail(user.getEmail());
+        response.setPhone(user.getPhone());
+        response.setActive(user.isActive());
+
+        return response;
+    }
+
 
 }
 

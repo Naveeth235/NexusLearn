@@ -1,9 +1,6 @@
 package com.nav.user_management_service.controller;
 
-import com.nav.user_management_service.dto.LoginRequestDTO;
-import com.nav.user_management_service.dto.LoginResponseDTO;
-import com.nav.user_management_service.dto.UpdateUserRequestDTO;
-import com.nav.user_management_service.dto.UserRequestDTO;
+import com.nav.user_management_service.dto.*;
 import com.nav.user_management_service.service.UserService;
 import com.nav.user_management_service.service.AuthService;
 import jakarta.validation.Valid;
@@ -45,6 +42,12 @@ public class UserController {
     public ResponseEntity<String> deleteAccount(Principal principal) {
         String response = userService.softDeleteUser(principal.getName());
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserResponseDTO> getProfile(Principal principal) {
+        UserResponseDTO user = userService.getProfile(principal.getName());
+        return ResponseEntity.ok(user);
     }
 
 }
