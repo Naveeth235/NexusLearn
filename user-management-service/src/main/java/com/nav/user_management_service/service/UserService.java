@@ -56,5 +56,17 @@ public class UserService {
         return "Profile updated successfully.";
     }
 
+    public String softDeleteUser(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        user.setActive(false);
+        user.setDeleted(true);
+        user.setUpdatedAt(LocalDateTime.now());
+
+        userRepository.save(user);
+        return "User account has been deactivated.";
+    }
+
 }
 

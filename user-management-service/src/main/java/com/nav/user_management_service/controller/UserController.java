@@ -41,4 +41,10 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    @DeleteMapping("/me")
+    public ResponseEntity<String> deleteAccount(Principal principal) {
+        String response = userService.softDeleteUser(principal.getName());
+        return ResponseEntity.ok(response);
+    }
+
 }
