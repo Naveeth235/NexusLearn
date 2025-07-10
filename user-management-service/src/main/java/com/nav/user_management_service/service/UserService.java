@@ -20,8 +20,8 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public String registerUser(UserRequestDTO userRequest) {
-        if (userRepository.existsByUsername(userRequest.getUsername())) {
-            throw new RuntimeException("Username already exists");
+        if (userRepository.findByEmail(userRequest.getEmail()).isPresent()) {
+            throw new RuntimeException("Email already in use");
         }
 
         User user = new User();

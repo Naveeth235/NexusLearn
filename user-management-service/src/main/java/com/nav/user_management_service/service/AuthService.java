@@ -19,11 +19,13 @@ public class AuthService {
     private final JwtUtil jwtUtil;
 
     public LoginResponseDTO login(LoginRequestDTO request) {
-        Authentication auth = new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
+        Authentication auth = new UsernamePasswordAuthenticationToken(
+                request.getEmail(), request.getPassword());
+
         authenticationManager.authenticate(auth);
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
-        String token = jwtUtil.generateToken(userDetails.getUsername());
+        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
+        String token = jwtUtil.generateToken(userDetails);
 
         return new LoginResponseDTO(token);
     }
