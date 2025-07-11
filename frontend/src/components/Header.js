@@ -6,9 +6,10 @@ import profilePic from '../assets/profile.png';
 const Header = () => {
   return (
     <header className="header-container">
-        
-      <div className="logo-container">
+      {/* Logo and Text Container (now side-by-side) */}
+      <div className="logo-title-container">
         <img src={logo} alt="Learning Platform Logo" className="logo" />
+        <h1 className="logo-text">NexusLearn</h1>
       </div>
 
       <nav className="nav-links">

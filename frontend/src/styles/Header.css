@@ -10,9 +10,22 @@
   z-index: 100;
 }
 
-.logo-container .logo {
-  height: 40px; 
+.logo-title-container {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.logo-title-container .logo {
+  height: 40px;
   cursor: pointer;
+}
+
+.logo-title-container .logo-text {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 1.75rem;
+  font-weight: 800; 
 }
 
 .nav-links {
@@ -22,11 +35,12 @@
 }
 
 .nav-button {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1.2rem; 
   background-color: #0569cc; 
   color: white;
-  border-radius: 20px; 
+  border-radius: 20px;
   text-decoration: none;
+  font-size: 1rem;
   font-weight: 500;
   transition: all 0.3s ease;
   border: none;
@@ -34,7 +48,7 @@
 }
 
 .nav-button:hover {
-  background-color: #023970; 
+  background-color: #0454a8; 
   transform: translateY(-2px);
 }
 
@@ -42,7 +56,7 @@
   display: flex;
   align-items: center;
   flex-grow: 1;
-  max-width: 400px;
+  max-width: 300px;
   margin: 0 2rem;
 }
 
@@ -56,8 +70,9 @@
 }
 
 .search-button {
-  padding: 0.6rem 1rem;
-  background-color: #0569cc;
+  padding: 0.6rem 1.2rem;
+  background-color: #0569cc; 
+  font-size: 1rem;
   color: white;
   border: none;
   border-radius: 0 20px 20px 0;
@@ -66,19 +81,20 @@
 }
 
 .search-button:hover {
-  background-color: #023970;
+  background-color: #0454a8;
 }
 
 .profile-container .profile-icon {
-  width: 40px;
-  height: 40px;
+  width: 42px; 
+  height: 42px;
   border-radius: 50%;
   object-fit: cover;
   cursor: pointer;
-  border: 2px solid #0569cc;
-  transition: transform 0.3s;
+  border: 2px solid #0569cc; 
+  transition: all 0.3s;
 }
 
 .profile-icon:hover {
   transform: scale(1.1);
+  border-color: #0454a8; 
 }
