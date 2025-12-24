@@ -12,32 +12,31 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/quiz")
+@RequestMapping("/api/quizzes")
+@CrossOrigin(origins = "*")
 public class QuizController {
 
     @Autowired
     private QuizService quizService;
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<Quiz>> getAllQuizzes() {
         return quizService.getAllQuizzes();
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<String> createQuiz(@RequestBody QuizDTO quizdto) {
         return quizService.createQuiz(quizdto.getCategoryName(), quizdto.getNumberOfQuestions(), quizdto.getTitle());
     }
 
-    @GetMapping("get/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<List<QuestionWrapper>> getQuizQuestions(@PathVariable Integer id) {
         return quizService.getQuizQuestions(id);
     }
 
-    @PostMapping("/submit/{id}")
-    public ResponseEntity<Integer> calculateResult(@PathVariable Integer id, @RequestBody List<Response> responses) {
+    @PostMapping("/{id}/submit")
+    public ResponseEntity<Integer> submitQuiz(@PathVariable Integer id, @RequestBody List<Response> responses) {
         return quizService.calculateResult(id, responses);
-
     }
 }
