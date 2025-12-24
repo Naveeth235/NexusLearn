@@ -1,5 +1,6 @@
 package com.nav.course_service.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,6 +21,7 @@ public class Enrollment {
 
     @ManyToOne
     @JoinColumn(name = "course_id")
+    @JsonIgnoreProperties("chapters")
     private Course course;
 
     private LocalDateTime enrolledAt;

@@ -1,5 +1,6 @@
 package com.nav.course_service.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,5 +24,6 @@ public class Lesson {
 
     @ManyToOne
     @JoinColumn(name = "chapter_id")
+    @JsonBackReference
     private Chapter chapter;
 }
