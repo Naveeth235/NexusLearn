@@ -22,6 +22,11 @@ public class Lesson {
 
     private String videoUrl; // Optional
 
+    private String duration; // e.g., "15min", "30min"
+
+    @Enumerated(EnumType.STRING)
+    private LessonType type; // VIDEO, READING, QUIZ
+
     @ManyToOne
     @JoinColumn(name = "chapter_id")
     @JsonBackReference

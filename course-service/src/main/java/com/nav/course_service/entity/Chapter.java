@@ -20,6 +20,8 @@ public class Chapter {
 
     private String title;
 
+    private String duration; // e.g., "4h 30min"
+
     @ManyToOne
     @JoinColumn(name = "course_id")
     @JsonBackReference
