@@ -5,32 +5,40 @@ import com.nav.user_management_service.service.UserService;
 import com.nav.user_management_service.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
     private final UserService userService;
-    @Autowired
     private final AuthService authService;
 
+    // ==================== PUBLIC ENDPOINTS ====================
+
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@Valid @RequestBody UserRequestDTO requestDTO) {
-        String response = userService.registerUser(requestDTO);
+    public ResponseEntity<RegisterResponseDTO> registerUser(@Valid @RequestBody UserRequestDTO requestDTO) {
+        RegisterResponseDTO response = userService.registerUser(requestDTO);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO request) {
         return ResponseEntity.ok(authService.login(request));
+    }
+
+    // ==================== STUDENT & ADMIN ENDPOINTS ====================
+
+    @GetMapping("/me")
+    public ResponseEntity<UserResponseDTO> getProfile(Principal principal) {
+        UserResponseDTO user = userService.getProfile(principal.getName());
+        return ResponseEntity.ok(user);
     }
 
     @PutMapping("/me")
@@ -45,10 +53,40 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/me")
-    public ResponseEntity<UserResponseDTO> getProfile(Principal principal) {
-        UserResponseDTO user = userService.getProfile(principal.getName());
+    // ==================== ADMIN-ONLY ENDPOINTS ====================
+
+    @GetMapping("/admin/all")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
+        List<UserResponseDTO> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/admin/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Integer id) {
+        UserResponseDTO user = userService.getUserById(id);
         return ResponseEntity.ok(user);
     }
 
+    @DeleteMapping("/admin/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> deleteUserByAdmin(@PathVariable Integer id) {
+        String response = userService.deleteUserById(id);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/admin/{id}/activate")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> activateUser(@PathVariable Integer id) {
+        String response = userService.activateUser(id);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/admin/{id}/deactivate")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> deactivateUser(@PathVariable Integer id) {
+        String response = userService.deactivateUser(id);
+        return ResponseEntity.ok(response);
+    }
 }

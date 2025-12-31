@@ -5,12 +5,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Bean
@@ -18,8 +20,18 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/users/register", "/api/users/login").permitAll()
-                        .anyRequest().authenticated()
+                    // Public endpoints - no authentication required
+                    .requestMatchers("/api/users/register", "/api/users/login", 
+                                     "/users/register", "/users/login").permitAll()
+                    
+                    // Admin-only endpoints
+                    .requestMatchers("/api/users/admin/**").hasRole("ADMIN")
+                    
+                    // Student and Admin can access these
+                    .requestMatchers("/api/users/me", "/api/users/me/**").hasAnyRole("STUDENT", "ADMIN")
+                    
+                    // All other requests need authentication
+                    .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
 
