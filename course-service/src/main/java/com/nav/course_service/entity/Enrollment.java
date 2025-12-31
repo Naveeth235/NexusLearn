@@ -28,4 +28,11 @@ public class Enrollment {
 
     @Enumerated(EnumType.STRING)
     private EnrollmentStatus status;
+
+    @Builder.Default
+    private Integer progress = 0; // Progress percentage (0-100)
+
+    private LocalDateTime lastAccessedAt;
+
+    private Integer completedLessons;
 }

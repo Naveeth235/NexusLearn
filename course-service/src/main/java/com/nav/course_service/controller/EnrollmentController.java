@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/enrollments")
@@ -39,6 +40,28 @@ public class EnrollmentController {
         return ResponseEntity.ok(enrollmentService.getEnrollmentsByCourseId(courseId));
     }
 
+    @GetMapping("/check")
+    public ResponseEntity<Map<String, Boolean>> checkEnrollment(
+            @RequestParam String studentId, 
+            @RequestParam Long courseId) {
+        boolean isEnrolled = enrollmentService.isStudentEnrolled(studentId, courseId);
+        return ResponseEntity.ok(Map.of("enrolled", isEnrolled));
+    }
+
+    @GetMapping("/student/{studentId}/course/{courseId}")
+    public ResponseEntity<Enrollment> getEnrollmentByStudentAndCourse(
+            @PathVariable String studentId,
+            @PathVariable Long courseId) {
+        return enrollmentService.getEnrollmentByStudentAndCourse(studentId, courseId)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/status/{status}")
+    public ResponseEntity<List<Enrollment>> getEnrollmentsByStatus(@PathVariable EnrollmentStatus status) {
+        return ResponseEntity.ok(enrollmentService.getEnrollmentsByStatus(status));
+    }
+
     @PostMapping
     public ResponseEntity<Enrollment> enrollStudent(@RequestParam String studentId, @RequestParam Long courseId) {
         try {
@@ -53,6 +76,34 @@ public class EnrollmentController {
     public ResponseEntity<Enrollment> updateEnrollmentStatus(@PathVariable Long id, @RequestParam EnrollmentStatus status) {
         try {
             Enrollment updatedEnrollment = enrollmentService.updateEnrollmentStatus(id, status);
+            return ResponseEntity.ok(updatedEnrollment);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/{id}/progress")
+    public ResponseEntity<Enrollment> updateProgress(
+            @PathVariable Long id,
+            @RequestParam Integer progress,
+            @RequestParam(required = false, defaultValue = "0") Integer completedLessons) {
+        try {
+            Enrollment updatedEnrollment = enrollmentService.updateProgress(id, progress, completedLessons);
+            return ResponseEntity.ok(updatedEnrollment);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/student/{studentId}/course/{courseId}/progress")
+    public ResponseEntity<Enrollment> updateProgressByStudentAndCourse(
+            @PathVariable String studentId,
+            @PathVariable Long courseId,
+            @RequestParam Integer progress,
+            @RequestParam(required = false, defaultValue = "0") Integer completedLessons) {
+        try {
+            Enrollment updatedEnrollment = enrollmentService.updateProgressByStudentAndCourse(
+                    studentId, courseId, progress, completedLessons);
             return ResponseEntity.ok(updatedEnrollment);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
