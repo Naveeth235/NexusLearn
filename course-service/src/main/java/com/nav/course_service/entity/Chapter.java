@@ -1,5 +1,7 @@
 package com.nav.course_service.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,10 +20,14 @@ public class Chapter {
 
     private String title;
 
+    private String duration; // e.g., "4h 30min"
+
     @ManyToOne
     @JoinColumn(name = "course_id")
+    @JsonBackReference
     private Course course;
 
     @OneToMany(mappedBy = "chapter", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Lesson> lessons;
 }

@@ -38,6 +38,7 @@ public class JwtUtil {
         return getAllClaims(token).getSubject();
     }
 
+    @SuppressWarnings("unchecked")
     public List<String> extractRoles(String token) {
         Claims claims = getAllClaims(token);
         return claims.get("roles", List.class);

@@ -21,7 +21,18 @@ public class Quiz {
 
     private String title;
 
+    @Column(length = 1000)
+    private String description;
+
+    private String category;
+
     @ElementCollection
     private List<Integer> questionIds;
+
+    private String difficultyLevel; // Easy, Medium, Hard
+
+    private Integer timeLimit; // in minutes
+
+    private Integer passingScore; // percentage (e.g., 70 means 70%)
 }
 

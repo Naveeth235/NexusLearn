@@ -1,9 +1,6 @@
 package com.nav.questionService.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -17,7 +14,9 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(length = 1000)
     private String questionTitle;
+    
     private String option1;
     private String option2;
     private String option3;
@@ -26,4 +25,6 @@ public class Question {
     private String difficultyLevel;
     private String category;
 
+    @Column(length = 1000)
+    private String explanation; // Explanation for the correct answer
 }

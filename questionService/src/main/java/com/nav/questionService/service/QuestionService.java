@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
@@ -87,10 +86,16 @@ public class QuestionService {
 
         for (Response response : responses) {
             Question question = questionRepository.findById(response.getId()).get();
+            System.out.println("Question ID: " + response.getId());
+            System.out.println("User Response: '" + response.getResponse() + "'");
+            System.out.println("Right Answer: '" + question.getRightAnswer() + "'");
+            System.out.println("Match: " + response.getResponse().equals(question.getRightAnswer()));
+            
             if (response.getResponse().equals(question.getRightAnswer())) {
                 right++;
             }
         }
+        System.out.println("Total correct: " + right + " out of " + responses.size());
         return new ResponseEntity<>(right, HttpStatus.OK);
     }
 }
