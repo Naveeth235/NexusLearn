@@ -12,7 +12,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/questions")
-@CrossOrigin(origins = "*")
 public class QuestionController {
 
     @Autowired
@@ -20,6 +19,11 @@ public class QuestionController {
 
     @GetMapping
     public ResponseEntity<List<Question>> getAllQuestions() {
+        return ResponseEntity.ok(questionService.getAllQuestions());
+    }
+
+    @GetMapping("/allQuestions")
+    public ResponseEntity<List<Question>> getAllQuestionsAlias() {
         return ResponseEntity.ok(questionService.getAllQuestions());
     }
 

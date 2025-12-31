@@ -86,10 +86,16 @@ public class QuestionService {
 
         for (Response response : responses) {
             Question question = questionRepository.findById(response.getId()).get();
+            System.out.println("Question ID: " + response.getId());
+            System.out.println("User Response: '" + response.getResponse() + "'");
+            System.out.println("Right Answer: '" + question.getRightAnswer() + "'");
+            System.out.println("Match: " + response.getResponse().equals(question.getRightAnswer()));
+            
             if (response.getResponse().equals(question.getRightAnswer())) {
                 right++;
             }
         }
+        System.out.println("Total correct: " + right + " out of " + responses.size());
         return new ResponseEntity<>(right, HttpStatus.OK);
     }
 }
