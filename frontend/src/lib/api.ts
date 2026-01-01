@@ -67,6 +67,7 @@ export const API_ENDPOINTS = {
     GET_QUIZ_BY_ID: (quizId: string) => `${API_BASE_URL}/quizzes/get/${quizId}`,
     GET_QUIZ_QUESTIONS: (quizId: string) => `${API_BASE_URL}/quizzes/${quizId}`,
     CREATE_QUIZ: `${API_BASE_URL}/quizzes`,
+    DELETE_QUIZ: (quizId: string) => `${API_BASE_URL}/quizzes/${quizId}`,
     SUBMIT_QUIZ: (quizId: string) => `${API_BASE_URL}/quizzes/${quizId}/submit`,
     GET_QUIZ_HISTORY: (studentId: string) => `${API_BASE_URL}/quizzes/history/${studentId}`,
     GET_QUIZ_ATTEMPT: (attemptId: string) => `${API_BASE_URL}/quizzes/attempt/${attemptId}`,
@@ -136,6 +137,13 @@ export async function apiRequest<T>(
         message: 'An error occurred',
       }));
       throw new Error(error.message || `HTTP error! status: ${response.status}`);
+    }
+
+    // Handle empty responses or text responses (e.g., for DELETE operations)
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      const text = await response.text();
+      return text as any;
     }
 
     return await response.json();
@@ -271,6 +279,9 @@ export const quizService = {
   
   createQuiz: (quizData: any) =>
     apiRequest(API_ENDPOINTS.QUIZ.CREATE_QUIZ, HTTP_METHODS.POST, quizData),
+  
+  deleteQuiz: (quizId: string) =>
+    apiRequest(API_ENDPOINTS.QUIZ.DELETE_QUIZ(quizId), HTTP_METHODS.DELETE),
   
   submitQuiz: (quizId: string, studentId: string, responses: any[], timeTaken: number) =>
     apiRequest(API_ENDPOINTS.QUIZ.SUBMIT_QUIZ(quizId), HTTP_METHODS.POST, { studentId, responses, timeTaken }),
