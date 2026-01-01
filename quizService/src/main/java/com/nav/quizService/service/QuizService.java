@@ -79,7 +79,11 @@ public class QuizService {
             Quiz quiz = quizRepository.findById(quizId)
                     .orElseThrow(() -> new RuntimeException("Quiz not found"));
 
-            // Calculate score
+            // Fetch questions to check answers
+            ResponseEntity<List<QuestionWrapper>> questionsResponse = quizInterface.getQuestionsFromId(quiz.getQuestionIds());
+            List<QuestionWrapper> questions = questionsResponse.getBody();
+            
+            // Calculate score and determine which answers are correct
             ResponseEntity<Integer> scoreResponse = quizInterface.getScore(responses);
             Integer correctAnswers = scoreResponse.getBody();
             
@@ -92,8 +96,18 @@ public class QuizService {
                 QuizAttempt.UserResponse userResponse = new QuizAttempt.UserResponse();
                 userResponse.setQuestionId(response.getId());
                 userResponse.setSelectedAnswer(response.getResponse());
-                // Note: We would need to fetch the actual question to check if correct
-                // For now, we'll determine this from the score calculation
+                
+                // Find the corresponding question and check if answer is correct
+                boolean isCorrect = false;
+                if (questions != null) {
+                    for (QuestionWrapper question : questions) {
+                        if (question.getId().equals(response.getId())) {
+                            isCorrect = question.getRightAnswer().equals(response.getResponse());
+                            break;
+                        }
+                    }
+                }
+                userResponse.setIsCorrect(isCorrect);
                 userResponses.add(userResponse);
             }
 
