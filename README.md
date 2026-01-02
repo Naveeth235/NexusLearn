@@ -8,37 +8,37 @@ A modern full-stack educational platform built with microservices architecture, 
 
 ### Student Dashboard
 <div align="center">
-  <img src="./frontend/src/assets/Student Dashboard.png" alt="Student Dashboard" width="600">
+  <img src="./frontend/src/assets/Student_Dashboard.png" alt="Student Dashboard" width="600">
   <p><em>Student learning interface with course progress and achievements</em></p>
 </div>
 
 ### My Courses
 <div align="center">
-  <img src="./frontend/src/assets/My Courses.png" alt="My Courses" width="600">
+  <img src="./frontend/src/assets/My_Courses.png" alt="My Courses" width="600">
   <p><em>View enrolled courses and track learning progress</em></p>
 </div>
 
 ### All Courses
 <div align="center">
-  <img src="./frontend/src/assets/All Courses.png" alt="All Courses" width="600">
+  <img src="./frontend/src/assets/All_Courses.png" alt="All Courses" width="600">
   <p><em>Browse available courses and enroll in new learning paths</em></p>
 </div>
 
 ### Course Information
 <div align="center">
-  <img src="./frontend/src/assets/Course Info.png" alt="Course Information" width="600">
+  <img src="./frontend/src/assets/Course_Info.png" alt="Course Information" width="600">
   <p><em>Detailed course information with chapters and lessons</em></p>
 </div>
 
 ### Course Learning Page
 <div align="center">
-  <img src="./frontend/src/assets/Course Learning Page.png" alt="Course Learning Page" width="600">
+  <img src="./frontend/src/assets/Course_Learning_Page.png" alt="Course Learning Page" width="600">
   <p><em>Interactive lessons with video and text content</em></p>
 </div>
 
 ### Quiz Attempt
 <div align="center">
-  <img src="./frontend/src/assets/Quiz Attempt.png" alt="Quiz Attempt" width="600">
+  <img src="./frontend/src/assets/Quiz_Attempt.png" alt="Quiz Attempt" width="600">
   <p><em>Real-time quiz with randomized questions and timer</em></p>
 </div>
 
