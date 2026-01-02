@@ -30,6 +30,12 @@ interface Quiz {
   questionIds: number[];
 }
 
+interface QuizAttempt {
+  attemptId: number;
+  score?: number;
+  passed?: boolean;
+}
+
 export function QuizTakingPage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -55,12 +61,12 @@ export function QuizTakingPage() {
         setLoading(true);
         
         // Fetch quiz details
-        const quizData = await quizService.getQuizById(id);
+        const quizData = await quizService.getQuizById(id) as Quiz;
         console.log('Quiz data:', quizData);
         setQuiz(quizData);
         
         // Fetch all questions for this quiz
-        const allQuestions = await questionService.getAllQuestions();
+        const allQuestions = await questionService.getAllQuestions() as Question[];
         console.log('All questions:', allQuestions);
         console.log('Quiz question IDs:', quizData.questionIds);
         
@@ -190,7 +196,7 @@ export function QuizTakingPage() {
           return { id: question.id, response: "" };
         }
         // Get the actual option text from the question
-        const optionText = question.options[answerIndex];
+        const optionText = question.options?.[answerIndex] || "";
         return { id: question.id, response: optionText };
       });
       
@@ -207,12 +213,12 @@ export function QuizTakingPage() {
         userId.toString(),
         responses,
         timeTaken
-      );
+      ) as QuizAttempt;
       
       console.log('Quiz submitted, attempt:', attempt);
       
       // Navigate to results with attempt ID
-      navigate(`/quiz/${quiz.id}/results/${attempt.id}`);
+      navigate(`/quiz/${quiz.id}/results/${attempt.attemptId}`);
     } catch (err: any) {
       console.error("Error submitting quiz:", err);
       setError(err.message || "Failed to submit quiz");
@@ -273,7 +279,7 @@ export function QuizTakingPage() {
 
         {/* Options */}
         <div className="space-y-3">
-          {currentQuestionData.options.map((option, index) => (
+          {(currentQuestionData.options || []).map((option, index) => (
             <button
               key={index}
               onClick={() => handleAnswerSelect(index)}

@@ -1,83 +1,232 @@
-# NexusLearn – An Interactive Learning Platform
+# NexusLearn – Interactive Learning Platform
 
-**Description:**
-A full-stack educational platform built with microservices architecture for students to access course materials and learn interactively while attempting quizzes. Features randomized questions, real-time results, and role-based access for **Admin** and **Student** users.
-
----
-
-## 🚀 Features
-
-* **User Management** – Secure registration, login, and role-based dashboards (Admin/Student).
-* **Interactive Learning** – Access text and video lessons organized into chapters.
-* **Quizzes & Assessments** – Randomized questions with real-time results.
-* **Admin Enrollment Approval** – Students can enroll in courses, but only admins can approve access.
-* **Marketplace Extension** – Sellers can list educational products, with **area-based product listings** for buyer convenience.
-* **Microservices Architecture** – Independent services with service discovery and inter-service communication via **Eureka** and **Feign**.
+A modern full-stack educational platform built with microservices architecture, enabling students to access interactive course materials, complete quizzes with real-time feedback, and manage their learning journey through role-based dashboards.
 
 ---
 
-## 🛠️ Tech Stack
+## 📸 Screenshots
 
-* **Backend**: Java Spring Boot, Microservices, Eureka, Feign
-* **Frontend**: React, HTML, CSS
-* **Database**: PostgreSQL
-* **Architecture**: Microservices with API Gateway and service registry
+### Student Dashboard
+<div align="center">
+  <img src="./frontend/src/assets/Student_Dashboard.png" alt="Student Dashboard" width="600">
+  <p><em>Student learning interface with course progress and achievements</em></p>
+</div>
+
+### My Courses
+<div align="center">
+  <img src="./frontend/src/assets/My_Courses.png" alt="My Courses" width="600">
+  <p><em>View enrolled courses and track learning progress</em></p>
+</div>
+
+### All Courses
+<div align="center">
+  <img src="./frontend/src/assets/All_Courses.png" alt="All Courses" width="600">
+  <p><em>Browse available courses and enroll in new learning paths</em></p>
+</div>
+
+### Course Information
+<div align="center">
+  <img src="./frontend/src/assets/Course_Info.png" alt="Course Information" width="600">
+  <p><em>Detailed course information with chapters and lessons</em></p>
+</div>
+
+### Course Learning Page
+<div align="center">
+  <img src="./frontend/src/assets/Course_Learning_Page.png" alt="Course Learning Page" width="600">
+  <p><em>Interactive lessons with video and text content</em></p>
+</div>
+
+### Quiz Attempt
+<div align="center">
+  <img src="./frontend/src/assets/Quiz_Attempt.png" alt="Quiz Attempt" width="600">
+  <p><em>Real-time quiz with randomized questions and timer</em></p>
+</div>
+
+### Admin Dashboard
+<div align="center">
+  <img src="./frontend/src/assets/Admin_Dashboard.png" alt="Admin Dashboard" width="600">
+  <p><em>Admin control panel with analytics and platform management</em></p>
+</div>
+
+### Enrollment Management
+<div align="center">
+  <img src="./frontend/src/assets/Admin_Enrollments.png" alt="Enrollment Management" width="600">
+  <p><em>Review and approve student course enrollment requests</em></p>
+</div>
+
+### Quiz Creation
+<div align="center">
+  <img src="./frontend/src/assets/Quiz_Create.png" alt="Quiz Creation" width="600">
+  <p><em>Create and manage quizzes with question bank integration</em></p>
+</div>
 
 ---
 
-## 📂 Project Structure
+## ✨ Key Features
 
-```bash
-NexusLearn/
-├── user-service/        # Handles registration, login, and role management
-├── course-service/      # Manages courses, lessons, and enrollment approvals
-├── quiz-service/        # Manages quizzes, randomized questions, and results
-├── marketplace-service/ # Area-based product and seller listings
-├── api-gateway/         # Routes and secures API requests
-├── frontend/            # React-based UI for learners and admins
-└── docs/                # Documentation and design references
-```
+### For Students
+- 🎓 **Interactive Learning** – Access video and text lessons organized by chapters
+- ✅ **Dynamic Quizzes** – Randomized questions with instant results and scoring
+- 📊 **Progress Tracking** – Monitor course completion and quiz performance
+- 🎯 **Achievement System** – Earn badges and track learning milestones
+- 📝 **Course Enrollment** – Browse and request access to available courses
+
+### For Administrators
+- 👥 **User Management** – Manage student accounts and roles
+- 📚 **Course Management** – Create, edit, and organize courses with chapters
+- ✔️ **Enrollment Approval** – Review and approve student course access requests
+- 📊 **Analytics Dashboard** – Monitor platform usage and student performance
+- 🛒 **Marketplace Management** – Oversee seller listings and area-based products
+
+### Technical Features
+- 🔐 **Secure Authentication** – Role-based access control (Admin/Student)
+- 🏗️ **Microservices Architecture** – Independent, scalable services
+- 🔄 **Service Discovery** – Eureka server for dynamic service registration
+- 🌐 **API Gateway** – Centralized routing and request management
+- 💬 **Inter-Service Communication** – OpenFeign for seamless microservice integration
 
 ---
 
-## ⚡ Getting Started
+## 🛠️ Technology Stack
+
+### Backend
+- **Java 17** with Spring Boot
+- **Spring Cloud** (Eureka, OpenFeign)
+- **PostgreSQL** for data persistence
+- **Maven** for dependency management
+
+### Frontend
+- **React** with TypeScript
+- **Vite** for fast development
+- **Modern CSS** for responsive design
+
+### Architecture
+- **Microservices** pattern
+- **Service Registry** (Eureka)
+- **API Gateway** for routing
+- **RESTful APIs** for communication
+
+---
+
+## 📂 Microservices Overview
+
+| Service | Port | Description |
+|---------|------|-------------|
+| **service-registry** | 8761 | Eureka server for service discovery |
+| **api-gateway** | 8080 | Routes requests to appropriate microservices |
+| **user-management-service** | 8081 | Handles authentication, authorization, and user profiles |
+| **course-service** | 8082 | Manages courses, chapters, lessons, and enrollments |
+| **quiz-service** | 8083 | Handles quiz creation and student quiz attempts |
+| **question-service** | 8084 | Manages question bank and randomization |
+| **frontend** | 5173 | React application for user interface |
+
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
+- Java 17 or higher
+- Maven 3.6+
+- Node.js 18+ and npm
+- PostgreSQL 14+
 
-* **Java 17+**
-* **Maven**
-* **Node.js + npm/yarn**
-* **PostgreSQL**
-
-### Setup Instructions
+### Quick Start
 
 1. **Clone the repository**
-
    ```bash
    git clone https://github.com/your-username/NexusLearn.git
    cd NexusLearn
    ```
 
-2. **Start backend services**
-
+2. **Start Service Registry (Eureka)**
    ```bash
-   cd user-service
+   cd service-registry
    mvn spring-boot:run
-   # repeat for course-service, quiz-service, marketplace-service, etc.
    ```
 
-3. **Start frontend**
+3. **Start Backend Services** (in separate terminals)
+   ```bash
+   # API Gateway
+   cd api-gateway && mvn spring-boot:run
+   
+   # User Management Service
+   cd user-management-service && mvn spring-boot:run
+   
+   # Course Service
+   cd course-service && mvn spring-boot:run
+   
+   # Quiz & Question Services
+   cd quiz-service && mvn spring-boot:run
+   cd question-service && mvn spring-boot:run
+   ```
 
+4. **Start Frontend**
    ```bash
    cd frontend
    npm install
-   npm start
+   npm run dev
    ```
 
-4. **Access the app**
-   Open [http://localhost:3000](http://localhost:3000) in your browser.
+5. **Access the Application**
+   - Frontend: `http://localhost:5173`
+   - Eureka Dashboard: `http://localhost:8761`
+   - API Gateway: `http://localhost:8080`
+
+---
+
+## 🏗️ Architecture
+
+```
+┌─────────────┐
+│   Frontend  │ (React)
+│  Port: 5173 │
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│ API Gateway │
+│  Port: 8080 │
+└──────┬──────┘
+       │
+       ▼
+┌──────────────────────────────────────┐
+│      Service Registry (Eureka)       │
+│           Port: 8761                 │
+└──────────────────────────────────────┘
+       │
+       ├──────┬──────────┬──────────┬──────────┐
+       ▼      ▼          ▼          ▼          ▼
+    User   Course    Quiz    Question    [Future]
+   Service Service  Service  Service     Services
+```
+
+---
+
+## 📋 API Documentation
+
+Key API endpoints are exposed through the API Gateway at `http://localhost:8080`
+
+- **Authentication**: `/api/auth/*`
+- **Users**: `/api/users/*`
+- **Courses**: `/api/courses/*`
+- **Quizzes**: `/api/quizzes/*`
+- **Questions**: `/api/questions/*`
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+---
 
 ## 📜 License
 
 This project is licensed under the MIT License.
+
+---
+
+## 📧 Contact
+
+For questions or support, please open an issue on GitHub.
 
