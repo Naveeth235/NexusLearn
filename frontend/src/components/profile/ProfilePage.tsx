@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { 
   Edit, 
   Mail, 
@@ -8,12 +9,82 @@ import {
   Trophy, 
   Target,
   Award,
-  Shield
+  Shield,
+  Clock,
+  Loader2
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
+import { enrollmentService, quizService } from "../../lib/api";
 
 export function ProfilePage() {
   const { user, isAdmin } = useAuth();
+  const [stats, setStats] = useState({
+    coursesEnrolled: 0,
+    coursesCompleted: 0,
+    quizzesTaken: 0,
+    avgScore: 0,
+    hoursLearned: 0
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStudentStats = async () => {
+      if (!user?.id || isAdmin) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+
+        // Fetch enrollments
+        const enrollments = await enrollmentService.getStudentEnrollments(user.id.toString()) as Array<{
+          status: 'PENDING' | 'APPROVED' | 'REJECTED';
+          progress: number;
+          course: {
+            duration?: string;
+          };
+        }>;
+
+        const approvedEnrollments = enrollments.filter(e => e.status === 'APPROVED');
+        const completedCourses = approvedEnrollments.filter(e => e.progress === 100);
+
+        // Calculate hours learned from course durations
+        let totalMinutes = 0;
+        approvedEnrollments.forEach(enrollment => {
+          const duration = enrollment.course.duration;
+          if (duration) {
+            // Parse duration like "10h 30m", "5h", "45m"
+            const hourMatch = duration.match(/(\d+)h/);
+            const minMatch = duration.match(/(\d+)m/);
+            if (hourMatch) totalMinutes += parseInt(hourMatch[1]) * 60;
+            if (minMatch) totalMinutes += parseInt(minMatch[1]);
+          }
+        });
+        const hoursLearned = Math.round(totalMinutes / 60);
+
+        // Fetch quiz statistics
+        const quizHistory = await quizService.getQuizHistory() as Array<{ score: number }>;
+        const avgScore = quizHistory.length > 0
+          ? Math.round(quizHistory.reduce((sum, attempt) => sum + attempt.score, 0) / quizHistory.length)
+          : 0;
+
+        setStats({
+          coursesEnrolled: approvedEnrollments.length,
+          coursesCompleted: completedCourses.length,
+          quizzesTaken: quizHistory.length,
+          avgScore,
+          hoursLearned
+        });
+      } catch (err) {
+        console.error('Failed to fetch student stats:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStudentStats();
+  }, [user, isAdmin]);
 
   if (!user) {
     return (
@@ -138,43 +209,62 @@ export function ProfilePage() {
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
                 <h2 className="text-[#1935ca] mb-6">Learning Statistics</h2>
                 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="p-4 bg-blue-50 rounded-lg">
-                    <div className="flex items-center justify-between mb-2">
-                      <BookOpen className="size-8 text-blue-500" />
-                    </div>
-                    <p className="text-sm text-gray-600 mb-1">Courses Enrolled</p>
-                    <p className="text-2xl text-[#1935ca]">0</p>
+                {loading ? (
+                  <div className="flex items-center justify-center py-12">
+                    <Loader2 className="size-8 animate-spin text-[#1935ca]" />
+                    <span className="ml-2 text-gray-600">Loading statistics...</span>
                   </div>
+                ) : (
+                  <>
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                      <div className="p-4 bg-blue-50 rounded-lg">
+                        <div className="flex items-center justify-between mb-2">
+                          <BookOpen className="size-8 text-blue-500" />
+                        </div>
+                        <p className="text-sm text-gray-600 mb-1">Courses Enrolled</p>
+                        <p className="text-2xl text-[#1935ca]">{stats.coursesEnrolled}</p>
+                      </div>
 
-                  <div className="p-4 bg-green-50 rounded-lg">
-                    <div className="flex items-center justify-between mb-2">
-                      <Trophy className="size-8 text-green-500" />
+                      <div className="p-4 bg-green-50 rounded-lg">
+                        <div className="flex items-center justify-between mb-2">
+                          <Trophy className="size-8 text-green-500" />
+                        </div>
+                        <p className="text-sm text-gray-600 mb-1">Completed</p>
+                        <p className="text-2xl text-[#1935ca]">{stats.coursesCompleted}</p>
+                      </div>
+
+                      <div className="p-4 bg-purple-50 rounded-lg">
+                        <div className="flex items-center justify-between mb-2">
+                          <Brain className="size-8 text-purple-500" />
+                        </div>
+                        <p className="text-sm text-gray-600 mb-1">Quizzes Taken</p>
+                        <p className="text-2xl text-[#1935ca]">{stats.quizzesTaken}</p>
+                      </div>
+
+                      <div className="p-4 bg-yellow-50 rounded-lg">
+                        <div className="flex items-center justify-between mb-2">
+                          <Target className="size-8 text-yellow-500" />
+                        </div>
+                        <p className="text-sm text-gray-600 mb-1">Avg Score</p>
+                        <p className="text-2xl text-[#1935ca]">{stats.avgScore}%</p>
+                      </div>
+
+                      <div className="p-4 bg-orange-50 rounded-lg">
+                        <div className="flex items-center justify-between mb-2">
+                          <Clock className="size-8 text-orange-500" />
+                        </div>
+                        <p className="text-sm text-gray-600 mb-1">Hours Learned</p>
+                        <p className="text-2xl text-[#1935ca]">{stats.hoursLearned}</p>
+                      </div>
                     </div>
-                    <p className="text-sm text-gray-600 mb-1">Completed</p>
-                    <p className="text-2xl text-[#1935ca]">0</p>
-                  </div>
 
-                  <div className="p-4 bg-purple-50 rounded-lg">
-                    <div className="flex items-center justify-between mb-2">
-                      <Brain className="size-8 text-purple-500" />
-                    </div>
-                    <p className="text-sm text-gray-600 mb-1">Quizzes Taken</p>
-                    <p className="text-2xl text-[#1935ca]">0</p>
-                  </div>
-
-                  <div className="p-4 bg-yellow-50 rounded-lg">
-                    <div className="flex items-center justify-between mb-2">
-                      <Target className="size-8 text-yellow-500" />
-                    </div>
-                    <p className="text-sm text-gray-600 mb-1">Avg Score</p>
-                    <p className="text-2xl text-[#1935ca]">0%</p>
-                  </div>
-                </div>
-
-                <div className="mt-6 pt-6 border-t border-gray-200 text-center text-gray-500">
-                  <p className="text-sm">Start taking courses and quizzes to see your statistics!</p>
-                </div>
+                    {stats.coursesEnrolled === 0 && (
+                      <div className="mt-6 pt-6 border-t border-gray-200 text-center text-gray-500">
+                        <p className="text-sm">Start taking courses and quizzes to see your statistics!</p>
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
 
               {/* Recent Activity */}

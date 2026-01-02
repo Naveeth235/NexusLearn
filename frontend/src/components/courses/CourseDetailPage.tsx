@@ -54,6 +54,7 @@ export function CourseDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [enrolled, setEnrolled] = useState(false);
+  const [enrollmentStatus, setEnrollmentStatus] = useState<'PENDING' | 'APPROVED' | 'REJECTED' | null>(null);
   const [enrolling, setEnrolling] = useState(false);
   const [enrollmentError, setEnrollmentError] = useState<string | null>(null);
 
@@ -77,9 +78,12 @@ export function CourseDetailPage() {
         // Check if user is already enrolled
         if (isAuthenticated && user?.id) {
           try {
-            const enrollments = await enrollmentService.getStudentEnrollments(user.id.toString()) as Array<{ course: { id: number } }>;
-            const isEnrolled = enrollments.some((e) => e.course.id.toString() === id);
-            setEnrolled(isEnrolled);
+            const enrollments = await enrollmentService.getStudentEnrollments(user.id.toString()) as Array<{ course: { id: number }, status: 'PENDING' | 'APPROVED' | 'REJECTED' }>;
+            const enrollment = enrollments.find((e) => e.course.id.toString() === id);
+            if (enrollment) {
+              setEnrolled(true);
+              setEnrollmentStatus(enrollment.status);
+            }
           } catch (err) {
             console.error('Failed to check enrollment:', err);
           }
@@ -160,6 +164,7 @@ export function CourseDetailPage() {
       setEnrollmentError(null);
       await enrollmentService.enrollStudent(user.id.toString(), id!);
       setEnrolled(true);
+      setEnrollmentStatus('PENDING');
     } catch (err: any) {
       setEnrollmentError(err.message || 'Failed to enroll in course');
       console.error('Enrollment error:', err);
@@ -247,29 +252,45 @@ export function CourseDetailPage() {
             
             {enrolled ? (
               <div>
-                <div className="mb-4 bg-green-50 border border-green-200 rounded-lg p-3 text-sm text-green-700 flex items-center gap-2">
-                  <CheckCircle className="size-4" />
-                  You are enrolled in this course
-                </div>
-                <div className="mb-4">
-                  <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
-                    <span>Your Progress</span>
-                    <span>0%</span>
+                {enrollmentStatus === 'PENDING' && (
+                  <div className="mb-4 bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-sm text-yellow-800 flex items-center gap-2">
+                    <Clock className="size-4" />
+                    Enrollment pending admin approval
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div 
-                      className="bg-[#1935CA] h-2 rounded-full transition-all"
-                      style={{ width: '0%' }}
-                    />
+                )}
+                {enrollmentStatus === 'APPROVED' && (
+                  <>
+                    <div className="mb-4 bg-green-50 border border-green-200 rounded-lg p-3 text-sm text-green-700 flex items-center gap-2">
+                      <CheckCircle className="size-4" />
+                      You are enrolled in this course
+                    </div>
+                    <div className="mb-4">
+                      <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
+                        <span>Your Progress</span>
+                        <span>0%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div 
+                          className="bg-[#1935CA] h-2 rounded-full transition-all"
+                          style={{ width: '0%' }}
+                        />
+                      </div>
+                    </div>
+                    <Link 
+                      to={`/courses/${id}/learn`}
+                      className="w-full bg-[#1935CA] text-white py-3 rounded-lg hover:bg-[#152a9e] transition-colors flex items-center justify-center gap-2"
+                    >
+                      <PlayCircle className="size-5" />
+                      Continue Course
+                    </Link>
+                  </>
+                )}
+                {enrollmentStatus === 'REJECTED' && (
+                  <div className="mb-4 bg-red-50 border border-red-200 rounded-lg p-3 text-sm text-red-700 flex items-center gap-2">
+                    <Lock className="size-4" />
+                    Enrollment request was rejected
                   </div>
-                </div>
-                <Link 
-                  to={`/courses/${id}/learn`}
-                  className="w-full bg-[#1935CA] text-white py-3 rounded-lg hover:bg-[#152a9e] transition-colors flex items-center justify-center gap-2"
-                >
-                  <PlayCircle className="size-5" />
-                  Continue Course
-                </Link>
+                )}
               </div>
             ) : (
               <button 

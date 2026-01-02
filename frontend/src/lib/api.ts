@@ -67,6 +67,7 @@ export const API_ENDPOINTS = {
     GET_QUIZ_BY_ID: (quizId: string) => `${API_BASE_URL}/quizzes/get/${quizId}`,
     GET_QUIZ_QUESTIONS: (quizId: string) => `${API_BASE_URL}/quizzes/${quizId}`,
     CREATE_QUIZ: `${API_BASE_URL}/quizzes`,
+    UPDATE_QUIZ: (quizId: string) => `${API_BASE_URL}/quizzes/${quizId}`,
     DELETE_QUIZ: (quizId: string) => `${API_BASE_URL}/quizzes/${quizId}`,
     SUBMIT_QUIZ: (quizId: string) => `${API_BASE_URL}/quizzes/${quizId}/submit`,
     GET_QUIZ_HISTORY: (studentId: string) => `${API_BASE_URL}/quizzes/history/${studentId}`,
@@ -78,6 +79,17 @@ export const API_ENDPOINTS = {
   ADMIN: {
     GET_DASHBOARD_STATS: `${API_BASE_URL}/admin/stats`,
     GET_RECENT_USERS: `${API_BASE_URL}/admin/users/recent`,
+  },
+
+  // Notification Service
+  NOTIFICATION: {
+    GET_USER_NOTIFICATIONS: (userId: string) => `${API_BASE_URL}/notifications/user/${userId}`,
+    GET_UNREAD_NOTIFICATIONS: (userId: string) => `${API_BASE_URL}/notifications/user/${userId}/unread`,
+    GET_UNREAD_COUNT: (userId: string) => `${API_BASE_URL}/notifications/user/${userId}/unread/count`,
+    MARK_AS_READ: (notificationId: string) => `${API_BASE_URL}/notifications/${notificationId}/read`,
+    MARK_ALL_AS_READ: (userId: string) => `${API_BASE_URL}/notifications/user/${userId}/read-all`,
+    DELETE_NOTIFICATION: (notificationId: string) => `${API_BASE_URL}/notifications/${notificationId}`,
+    CREATE_NOTIFICATION: `${API_BASE_URL}/notifications`,
   },
 };
 
@@ -280,6 +292,9 @@ export const quizService = {
   createQuiz: (quizData: any) =>
     apiRequest(API_ENDPOINTS.QUIZ.CREATE_QUIZ, HTTP_METHODS.POST, quizData),
   
+  updateQuiz: (quizId: string, quizData: any) =>
+    apiRequest(API_ENDPOINTS.QUIZ.UPDATE_QUIZ(quizId), HTTP_METHODS.PUT, quizData),
+  
   deleteQuiz: (quizId: string) =>
     apiRequest(API_ENDPOINTS.QUIZ.DELETE_QUIZ(quizId), HTTP_METHODS.DELETE),
   
@@ -303,6 +318,30 @@ export const adminService = {
   
   getRecentUsers: () =>
     apiRequest(API_ENDPOINTS.ADMIN.GET_RECENT_USERS, HTTP_METHODS.GET),
+};
+
+// Notification Service Functions
+export const notificationService = {
+  getUserNotifications: (userId: string) =>
+    apiRequest(API_ENDPOINTS.NOTIFICATION.GET_USER_NOTIFICATIONS(userId), HTTP_METHODS.GET),
+  
+  getUnreadNotifications: (userId: string) =>
+    apiRequest(API_ENDPOINTS.NOTIFICATION.GET_UNREAD_NOTIFICATIONS(userId), HTTP_METHODS.GET),
+  
+  getUnreadCount: (userId: string) =>
+    apiRequest(API_ENDPOINTS.NOTIFICATION.GET_UNREAD_COUNT(userId), HTTP_METHODS.GET),
+  
+  markAsRead: (notificationId: string) =>
+    apiRequest(API_ENDPOINTS.NOTIFICATION.MARK_AS_READ(notificationId), HTTP_METHODS.PUT),
+  
+  markAllAsRead: (userId: string) =>
+    apiRequest(API_ENDPOINTS.NOTIFICATION.MARK_ALL_AS_READ(userId), HTTP_METHODS.PUT),
+  
+  deleteNotification: (notificationId: string) =>
+    apiRequest(API_ENDPOINTS.NOTIFICATION.DELETE_NOTIFICATION(notificationId), HTTP_METHODS.DELETE),
+  
+  createNotification: (notificationData: any) =>
+    apiRequest(API_ENDPOINTS.NOTIFICATION.CREATE_NOTIFICATION, HTTP_METHODS.POST, notificationData),
 };
 
 /**

@@ -74,6 +74,11 @@ public class QuizController {
         return quizService.getQuizAttemptsByQuiz(quizId);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateQuiz(@PathVariable Integer id, @RequestBody QuizDTO quizDTO) {
+        return quizService.updateQuiz(id, quizDTO);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteQuiz(@PathVariable Integer id) {
         return quizService.deleteQuiz(id);

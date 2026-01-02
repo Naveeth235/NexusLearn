@@ -7,9 +7,12 @@ import com.nav.course_service.repository.CourseRepository;
 import com.nav.course_service.repository.EnrollmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -18,6 +21,7 @@ public class EnrollmentService {
 
     private final EnrollmentRepository enrollmentRepository;
     private final CourseRepository courseRepository;
+    private final RestTemplate restTemplate = new RestTemplate();
 
     public List<Enrollment> getAllEnrollments() {
         return enrollmentRepository.findAll();
@@ -57,7 +61,7 @@ public class EnrollmentService {
                 .studentId(studentId)
                 .course(course)
                 .enrolledAt(LocalDateTime.now())
-                .status(EnrollmentStatus.APPROVED)
+                .status(EnrollmentStatus.PENDING)
                 .progress(0)
                 .completedLessons(0)
                 .lastAccessedAt(LocalDateTime.now())
@@ -79,7 +83,9 @@ public class EnrollmentService {
                 .orElseThrow(() -> new RuntimeException("Enrollment not found with id: " + id));
         
         enrollment.setStatus(status);
-        return enrollmentRepository.save(enrollment);
+        Enrollment updatedEnrollment = enrollmentRepository.save(enrollment);
+        
+        return updatedEnrollment;
     }
 
     public Enrollment updateProgress(Long enrollmentId, Integer progress, Integer completedLessons) {
