@@ -7,28 +7,40 @@ A modern full-stack educational platform built with microservices architecture, 
 ## 📸 Screenshots
 
 ### Student Dashboard
-![Student Dashboard](./frontend/src/assets/Student%20Dashboard.png)
-*Student learning interface with course progress and achievements*
+<div align="center">
+  <img src="./frontend/src/assets/Student Dashboard.png" alt="Student Dashboard" width="600">
+  <p><em>Student learning interface with course progress and achievements</em></p>
+</div>
 
 ### My Courses
-![My Courses](./frontend/src/assets/My%20Courses.png)
-*View enrolled courses and track learning progress*
+<div align="center">
+  <img src="./frontend/src/assets/My Courses.png" alt="My Courses" width="600">
+  <p><em>View enrolled courses and track learning progress</em></p>
+</div>
 
 ### All Courses
-![All Courses](./frontend/src/assets/All%20Courses.png)
-*Browse available courses and enroll in new learning paths*
+<div align="center">
+  <img src="./frontend/src/assets/All Courses.png" alt="All Courses" width="600">
+  <p><em>Browse available courses and enroll in new learning paths</em></p>
+</div>
 
 ### Course Information
-![Course Info](./frontend/src/assets/Course%20Info.png)
-*Detailed course information with chapters and lessons*
+<div align="center">
+  <img src="./frontend/src/assets/Course Info.png" alt="Course Information" width="600">
+  <p><em>Detailed course information with chapters and lessons</em></p>
+</div>
 
 ### Course Learning Page
-![Course Learning Page](./frontend/src/assets/Course%20Learning%20Page.png)
-*Interactive lessons with video and text content*
+<div align="center">
+  <img src="./frontend/src/assets/Course Learning Page.png" alt="Course Learning Page" width="600">
+  <p><em>Interactive lessons with video and text content</em></p>
+</div>
 
 ### Quiz Attempt
-![Quiz Attempt](./frontend/src/assets/Quiz%20Attempt.png)
-*Real-time quiz with randomized questions and timer*
+<div align="center">
+  <img src="./frontend/src/assets/Quiz Attempt.png" alt="Quiz Attempt" width="600">
+  <p><em>Real-time quiz with randomized questions and timer</em></p>
+</div>
 
 ---
 
