@@ -20,13 +20,14 @@ import { QuestionsListPage } from "./components/admin/QuestionsListPage";
 import { AddEditQuestionPage } from "./components/admin/AddEditQuestionPage";
 import { UserManagementPage } from "./components/admin/UserManagementPage";
 import { CourseManagementPage } from "./components/admin/CourseManagementPage";
+import { AddEditCoursePage } from "./components/admin/AddEditCoursePage";
 import { AdminSettingsPage } from "./components/admin/AdminSettingsPage";
 import { AdminQuizCreationPage } from "./components/admin/AdminQuizCreationPage";
 import { AdminQuizzesPage } from "./components/admin/AdminQuizzesPage";
+import { EnrollmentRequestsPage } from "./components/admin/EnrollmentRequestsPage";
 import { ProfilePage } from "./components/profile/ProfilePage";
 import { EditProfilePage } from "./components/profile/EditProfilePage";
-import { AchievementsPage } from "./components/achievements/AchievementsPage";
-import { NotificationsPage } from "./components/notifications/NotificationsPage";
+
 import { NotFoundPage } from "./components/errors/NotFoundPage";
 import { ForbiddenPage } from "./components/errors/ForbiddenPage";
 import { ServerErrorPage } from "./components/errors/ServerErrorPage";
@@ -59,8 +60,7 @@ export default function App() {
                       <Route path="/quiz/:id/take" element={<QuizTakingPage />} />
                       <Route path="/quiz/:id/results/:attemptId" element={<QuizResultsPage />} />
                       <Route path="/quiz-history" element={<QuizHistoryPage />} />
-                      <Route path="/achievements" element={<AchievementsPage />} />
-                      <Route path="/notifications" element={<NotificationsPage />} />
+                      {/* <Route path="/notifications" element={<NotificationsPage />} /> */}
                       <Route path="/admin/dashboard" element={<AdminDashboard />} />
                       <Route path="/admin" element={<AdminDashboard />} />
                       <Route path="/admin/analytics" element={<AnalyticsPage />} />
@@ -72,6 +72,9 @@ export default function App() {
                       <Route path="/admin/quiz/:id/edit" element={<AdminQuizCreationPage />} />
                       <Route path="/admin/users" element={<UserManagementPage />} />
                       <Route path="/admin/courses" element={<CourseManagementPage />} />
+                      <Route path="/admin/courses/new" element={<AddEditCoursePage />} />
+                      <Route path="/admin/courses/edit/:id" element={<AddEditCoursePage />} />
+                      <Route path="/admin/enrollments" element={<EnrollmentRequestsPage />} />
                       <Route path="/admin/settings" element={<AdminSettingsPage />} />
                       <Route path="/profile" element={<ProfilePage />} />
                       <Route path="/profile/edit" element={<EditProfilePage />} />
