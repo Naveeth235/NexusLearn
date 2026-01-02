@@ -42,6 +42,24 @@ A modern full-stack educational platform built with microservices architecture, 
   <p><em>Real-time quiz with randomized questions and timer</em></p>
 </div>
 
+### Admin Dashboard
+<div align="center">
+  <img src="./frontend/src/assets/Admin_Dashboard.png" alt="Admin Dashboard" width="600">
+  <p><em>Admin control panel with analytics and platform management</em></p>
+</div>
+
+### Enrollment Management
+<div align="center">
+  <img src="./frontend/src/assets/Admin_Enrollments.png" alt="Enrollment Management" width="600">
+  <p><em>Review and approve student course enrollment requests</em></p>
+</div>
+
+### Quiz Creation
+<div align="center">
+  <img src="./frontend/src/assets/Quiz_Create.png" alt="Quiz Creation" width="600">
+  <p><em>Create and manage quizzes with question bank integration</em></p>
+</div>
+
 ---
 
 ## ✨ Key Features
