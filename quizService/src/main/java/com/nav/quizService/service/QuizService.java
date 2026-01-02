@@ -159,6 +159,31 @@ public class QuizService {
         return ResponseEntity.ok(attempts);
     }
 
+    public ResponseEntity<?> updateQuiz(Integer id, QuizDTO quizDTO) {
+        try {
+            Optional<Quiz> existingQuizOpt = quizRepository.findById(id);
+            if (existingQuizOpt.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(java.util.Map.of("error", "Quiz not found"));
+            }
+
+            Quiz quiz = existingQuizOpt.get();
+            quiz.setTitle(quizDTO.getTitle());
+            quiz.setDescription(quizDTO.getDescription());
+            quiz.setCategory(quizDTO.getCategory() != null ? quizDTO.getCategory() : quizDTO.getCategoryName());
+            quiz.setDifficultyLevel(quizDTO.getDifficultyLevel());
+            quiz.setTimeLimit(quizDTO.getTimeLimit());
+            quiz.setPassingScore(quizDTO.getPassingScore());
+            quiz.setQuestionIds(quizDTO.getQuestionIds());
+
+            Quiz updatedQuiz = quizRepository.save(quiz);
+            return ResponseEntity.ok(updatedQuiz);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(java.util.Map.of("error", e.getMessage()));
+        }
+    }
+
     public ResponseEntity<String> deleteQuiz(Integer id) {
         try {
             Optional<Quiz> quiz = quizRepository.findById(id);

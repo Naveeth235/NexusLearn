@@ -65,10 +65,12 @@ export function QuizResultsPage() {
         
         // Fetch attempt details
         const attemptData = await quizService.getQuizAttempt(attemptId);
+        console.log("Attempt data:", attemptData);
         setAttempt(attemptData);
         
         // Fetch quiz details
-        const quizData = await quizService.getQuizById(attemptData.quizId);
+        const quizData = await quizService.getQuizById(String(attemptData.quizId));
+        console.log("Quiz data:", quizData);
         setQuiz(quizData);
         
         // Fetch questions
