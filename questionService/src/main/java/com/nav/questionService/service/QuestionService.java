@@ -75,6 +75,7 @@ public class QuestionService {
             wrapper.setOption2(question.getOption2());
             wrapper.setOption3(question.getOption3());
             wrapper.setOption4(question.getOption4());
+            wrapper.setRightAnswer(question.getRightAnswer());
             wrappers.add(wrapper);
         }
         return new ResponseEntity<>(wrappers, HttpStatus.OK);
