@@ -67,6 +67,22 @@ export function CourseLearningPage() {
   const currentChapterIndex = parseInt(searchParams.get("chapter") || "0");
   const currentLessonIndex = parseInt(searchParams.get("lesson") || "0");
 
+  // Convert YouTube URL to embed URL
+  const getYouTubeEmbedUrl = (url: string): string => {
+    // Handle youtube.com/watch?v=VIDEO_ID
+    if (url.includes('youtube.com/watch')) {
+      const videoId = new URL(url).searchParams.get('v');
+      return `https://www.youtube.com/embed/${videoId}`;
+    }
+    // Handle youtu.be/VIDEO_ID
+    if (url.includes('youtu.be/')) {
+      const videoId = url.split('youtu.be/')[1].split('?')[0];
+      return `https://www.youtube.com/embed/${videoId}`;
+    }
+    // Already an embed URL or other format
+    return url;
+  };
+
   useEffect(() => {
     const fetchCourseAndEnrollment = async () => {
       if (!courseId || !user?.id) return;
@@ -188,6 +204,25 @@ export function CourseLearningPage() {
 
   // Check if lesson is completed
   const isLessonCompleted = (lessonId: number) => completedLessonIds.has(lessonId);
+
+  // Keyboard shortcuts for navigation
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      // Only handle if not typing in an input
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+        return;
+      }
+      
+      if (e.key === 'ArrowLeft' && canGoPrevious) {
+        goToPrevious();
+      } else if (e.key === 'ArrowRight' && canGoNext) {
+        goToNext();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [canGoPrevious, canGoNext, currentChapterIndex, currentLessonIndex, course]);
 
   // Get lesson icon based on type
   const getLessonIcon = (type: Lesson["type"], completed: boolean) => {
@@ -383,40 +418,50 @@ export function CourseLearningPage() {
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-6">
               {/* Video Player (if video lesson) */}
               {currentLesson.type === "VIDEO" && currentLesson.videoUrl && (
-                <div className="aspect-video bg-gray-900 flex items-center justify-center">
+                <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
                   {currentLesson.videoUrl.includes("youtube") || 
                    currentLesson.videoUrl.includes("youtu.be") ? (
                     <iframe
-                      src={currentLesson.videoUrl.replace("watch?v=", "embed/")}
-                      className="w-full h-full"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      src={getYouTubeEmbedUrl(currentLesson.videoUrl)}
+                      className="absolute top-0 left-0 w-full h-full"
+                      title={currentLesson.title}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                       allowFullScreen
                     />
                   ) : (
                     <video
                       src={currentLesson.videoUrl}
                       controls
-                      className="w-full h-full"
-                    />
+                      controlsList="nodownload"
+                      className="absolute top-0 left-0 w-full h-full"
+                      title={currentLesson.title}
+                    >
+                      Your browser does not support the video tag.
+                    </video>
                   )}
                 </div>
               )}
 
               {/* Video Placeholder */}
               {currentLesson.type === "VIDEO" && !currentLesson.videoUrl && (
-                <div className="aspect-video bg-gray-900 flex items-center justify-center">
-                  <div className="text-center text-gray-400">
-                    <PlayCircle className="size-16 mx-auto mb-2" />
-                    <p>Video content coming soon</p>
+                <div className="relative w-full bg-gray-900" style={{ paddingBottom: '56.25%' }}>
+                  <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                    <div className="text-center text-gray-400">
+                      <PlayCircle className="size-16 mx-auto mb-2" />
+                      <p>Video content coming soon</p>
+                    </div>
                   </div>
                 </div>
               )}
 
               {/* Lesson Content Text */}
               <div className="p-6">
-                <div className="prose max-w-none">
+                <div className="prose prose-blue max-w-none">
                   {currentLesson.content ? (
-                    <div dangerouslySetInnerHTML={{ __html: currentLesson.content }} />
+                    <div 
+                      dangerouslySetInnerHTML={{ __html: currentLesson.content }} 
+                      className="text-gray-700 leading-relaxed"
+                    />
                   ) : (
                     <div className="text-gray-600">
                       <p className="mb-4">
@@ -470,7 +515,8 @@ export function CourseLearningPage() {
               <button
                 onClick={goToPrevious}
                 disabled={!canGoPrevious}
-                className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                title="Previous lesson (←)"
               >
                 <ChevronLeft className="size-5" />
                 Previous
@@ -504,7 +550,8 @@ export function CourseLearningPage() {
               <button
                 onClick={goToNext}
                 disabled={!canGoNext}
-                className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                title="Next lesson (→)"
               >
                 Next
                 <ChevronRight className="size-5" />
