@@ -7,20 +7,28 @@ A modern full-stack educational platform built with microservices architecture, 
 ## 📸 Screenshots
 
 ### Student Dashboard
-<!-- ![Student Dashboard](./screenshots/student-dashboard.png) -->
-*Coming soon - Student learning interface with course progress and achievements*
+![Student Dashboard](./frontend/src/assets/Student%20Dashboard.png)
+*Student learning interface with course progress and achievements*
 
-### Course Learning Interface
-<!-- ![Course View](./screenshots/course-view.png) -->
-*Coming soon - Interactive lessons with video and text content*
+### My Courses
+![My Courses](./frontend/src/assets/My%20Courses.png)
+*View enrolled courses and track learning progress*
 
-### Quiz Interface
-<!-- ![Quiz Interface](./screenshots/quiz-interface.png) -->
-*Coming soon - Real-time quiz with randomized questions*
+### All Courses
+![All Courses](./frontend/src/assets/All%20Courses.png)
+*Browse available courses and enroll in new learning paths*
 
-### Admin Dashboard
-<!-- ![Admin Dashboard](./screenshots/admin-dashboard.png) -->
-*Coming soon - Course management and enrollment approval interface*
+### Course Information
+![Course Info](./frontend/src/assets/Course%20Info.png)
+*Detailed course information with chapters and lessons*
+
+### Course Learning Page
+![Course Learning Page](./frontend/src/assets/Course%20Learning%20Page.png)
+*Interactive lessons with video and text content*
+
+### Quiz Attempt
+![Quiz Attempt](./frontend/src/assets/Quiz%20Attempt.png)
+*Real-time quiz with randomized questions and timer*
 
 ---
 
